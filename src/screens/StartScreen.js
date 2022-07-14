@@ -16,7 +16,8 @@ const StartScreen = () => {
 						break;
 					case RESULTS.DENIED:
 						console.log('The permission has not been requested / is denied but requestable');
-						requestSinglePermission(permission);
+				    console.log(permission)
+						requestSinglePermission({ permissionName: permission });
 						break;
 					case RESULTS.LIMITED:
 						console.log('The permission is limited: some actions are possible');
@@ -35,6 +36,7 @@ const StartScreen = () => {
 	};
 
 	const requestSinglePermission = async ({ permissionName: permission }) => {
+		console.log(permission)
 		request(permission).then((result) => {
 			setPermissionResult(result)
 			console.log(result)
