@@ -7,8 +7,8 @@ const StartScreen = () => {
 
 	const [permissionResult, setPermissionResult] = useState('Not asked');
 
-  const checkSinglePermissions = () => {
-		check(PERMISSIONS.ANDROID.CAMERA)
+  const checkSinglePermissions = ({ permissionName: permission }) => {
+		check(permission)
 			.then((result) => {
 				switch (result) {
 					case RESULTS.UNAVAILABLE:
@@ -16,7 +16,7 @@ const StartScreen = () => {
 						break;
 					case RESULTS.DENIED:
 						console.log('The permission has not been requested / is denied but requestable');
-						requestSinglePermission();
+						requestSinglePermission(permission);
 						break;
 					case RESULTS.LIMITED:
 						console.log('The permission is limited: some actions are possible');
@@ -34,29 +34,44 @@ const StartScreen = () => {
 			});
 	};
 
-	const checkMultiplePermissions = () => {
-		
-	};
-
-	const requestSinglePermission = async () => {
-		request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then((result) => {
+	const requestSinglePermission = async ({ permissionName: permission }) => {
+		request(permission).then((result) => {
 			setPermissionResult(result)
 			console.log(result)
 		});
 	};
 
-	const requestMultiplePermissions = () => {
-
-	};
-
-	useEffect(() => {
-		requestSinglePermission();
-	}, []);
-
   return (
-    <View style={styles.viewStyle}>
-      <Button title='Enable Camera Permission' style={styles.buttonStyle} onPress={requestSinglePermission} />
-    </View>
+		<View>
+			<View style={styles.viewStyle}>
+				<Button 
+					title='Enable Camera Permission'
+					style={styles.buttonStyle}
+					onPress={() => checkSinglePermissions({ permissionName: PERMISSIONS.ANDROID.CAMERA })}
+				/>
+			</View>
+			<View style={styles.viewStyle}>
+				<Button
+					title='Enable Audio Permission' 
+					style={styles.buttonStyle} 
+					onPress={() => checkSinglePermissions({ permissionName: PERMISSIONS.ANDROID.RECORD_AUDIO })} 
+				/>
+			</View>
+			<View style={styles.viewStyle}>
+				<Button 
+					title='Enable Storage Permission' 
+					style={styles.buttonStyle} 
+					onPress={() => checkSinglePermissions({ permissionName: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE })}
+				/>
+			</View>
+			<View style={styles.viewStyle}>
+				<Button 
+					title='Enable Bluetooth Scan Permission' 
+					style={styles.buttonStyle} 
+					onPress={() => checkSinglePermissions({ permissionName: PERMISSIONS.ANDROID.BLUETOOTH_SCAN })}
+				/>
+			</View>
+		</View>
   );
 };
 
