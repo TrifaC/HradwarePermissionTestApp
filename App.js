@@ -2,14 +2,16 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import StartScreen from './src/screens/StartScreen';
+import { Provider as PermissionProvider } from './src/contexts/PermissionContext';
+
+import PermissionListScreen from './src/screens/PermissionListScreen';
 
 const navigator = createStackNavigator(
   {
-    Start: StartScreen,
+    PermissionList: PermissionListScreen,
   },
   {
-    initialRouteName: 'Start',
+    initialRouteName: 'PermissionList',
     defaultNavigationOptions: {
       title: 'Hardware Permission Test',
     },
@@ -19,5 +21,9 @@ const navigator = createStackNavigator(
 const App = createAppContainer(navigator);
 
 export default () => {
-  return <App />;
+  return (
+    <PermissionProvider>
+      <App />
+    </PermissionProvider>
+  );
 };
